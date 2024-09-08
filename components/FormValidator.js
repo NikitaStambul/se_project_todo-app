@@ -1,11 +1,11 @@
 class FormValidator {
   constructor(settings, formEl) {
-    (this._inputSelector = settings.inputSelector),
-      (this._submitButtonSelector = settings.submitButtonSelector),
-      (this._errorClass = settings.errorClass),
-      (this._inputErrorClass = settings.inputErrorClass),
-      (this._inactiveButtonClass = settings.inactiveButtonClass),
-      (this._formEl = formEl);
+    this._inputSelector = settings.inputSelector;
+    this._submitButtonSelector = settings.submitButtonSelector;
+    this._errorClass = settings.errorClass;
+    this._inputErrorClass = settings.inputErrorClass;
+    this._inactiveButtonClass = settings.inactiveButtonClass;
+    this._formEl = formEl;
   }
 
   enableValidation() {
@@ -13,6 +13,12 @@ class FormValidator {
       evt.preventDefault();
     });
     this._setEventListeners();
+  }
+
+  resetValidation() {
+    this._formEl.reset();
+    const inputList = this._formEl.querrySelector(this._inputSelector);
+    inputList.forEach((inputEl) => this._hideInputError(inputEl));
   }
 
   _setEventListeners = () => {
@@ -25,7 +31,7 @@ class FormValidator {
 
     inputList.forEach((inputEl) => {
       inputEl.addEventListener("input", () => {
-        this._checkInputValidity(this._formEl, inputEl);
+        this._checkInputValidity(inputEl);
         this._toggleButtonState(inputList, buttonEl);
       });
     });
@@ -47,25 +53,25 @@ class FormValidator {
     }
   };
 
-  _checkInputValidity = (formEl, inputEl) => {
+  _checkInputValidity = (inputEl) => {
     if (!inputEl.validity.valid) {
-      this._showInputError(formEl, inputEl, inputEl.validationMessage);
+      this._showInputError(inputEl, inputEl.validationMessage);
     } else {
-      this._hideInputError(formEl, inputEl);
+      this._hideInputError(inputEl);
     }
   };
 
-  _showInputError = (formEl, inputEl, errorMessage) => {
+  _showInputError = (inputEl, errorMessage) => {
     const errorElId = `#${inputEl.id}-error`;
-    const errorEl = formEl.querySelector(errorElId);
+    const errorEl = this._formEl.querySelector(errorElId);
     inputEl.classList.add(this._inputErrorClass);
     errorEl.textContent = errorMessage;
     errorEl.classList.add(this._errorClass);
   };
 
-  _hideInputError = (formEl, inputEl) => {
+  _hideInputError = (inputEl) => {
     const errorElId = `#${inputEl.id}-error`;
-    const errorEl = formEl.querySelector(errorElId);
+    const errorEl = this._formEl.querySelector(errorElId);
     inputEl.classList.remove(this._inputErrorClass);
     errorEl.classList.remove(this._errorClass);
     errorEl.textContent = "";
