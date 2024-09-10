@@ -17,39 +17,39 @@ class FormValidator {
 
   resetValidation() {
     this._formEl.reset();
-    const inputList = this._formEl.querySelectorAll(this._inputSelector);
-    inputList.forEach((inputEl) => this._hideInputError(inputEl));
+    this._inputList.forEach((inputEl) => this._hideInputError(inputEl));
+    this._toggleButtonState();
   }
 
   _setEventListeners = () => {
-    const inputList = Array.from(
+    this._inputList = Array.from(
       this._formEl.querySelectorAll(this._inputSelector)
     );
-    const buttonEl = this._formEl.querySelector(this._submitButtonSelector);
+    this._buttonEl = this._formEl.querySelector(this._submitButtonSelector);
 
-    this._toggleButtonState(inputList, buttonEl);
+    this._toggleButtonState();
 
-    inputList.forEach((inputEl) => {
+    this._inputList.forEach((inputEl) => {
       inputEl.addEventListener("input", () => {
         this._checkInputValidity(inputEl);
-        this._toggleButtonState(inputList, buttonEl);
+        this._toggleButtonState();
       });
     });
   };
 
-  _toggleButtonState = (inputList, buttonEl) => {
+  _toggleButtonState = () => {
     const hasInvalidInput = (() => {
-      return inputList.some((inputEl) => {
+      return this._inputList.some((inputEl) => {
         return !inputEl.validity.valid;
       });
     })();
 
     if (hasInvalidInput) {
-      buttonEl.classList.add(this._inactiveButtonClass);
-      buttonEl.disabled = true;
+      this._buttonEl.classList.add(this._inactiveButtonClass);
+      this._buttonEl.disabled = true;
     } else {
-      buttonEl.classList.remove(this._inactiveButtonClass);
-      buttonEl.disabled = false;
+      this._buttonEl.classList.remove(this._inactiveButtonClass);
+      this._buttonEl.disabled = false;
     }
   };
 
