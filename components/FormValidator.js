@@ -17,7 +17,7 @@ class FormValidator {
 
   resetValidation() {
     this._formEl.reset();
-    const inputList = this._formEl.querrySelector(this._inputSelector);
+    const inputList = this._formEl.querySelectorAll(this._inputSelector);
     inputList.forEach((inputEl) => this._hideInputError(inputEl));
   }
 
