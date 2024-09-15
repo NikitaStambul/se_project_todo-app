@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 
 const todoSelectors = {
   todoSelector: ".todo",
@@ -10,23 +10,35 @@ const todoSelectors = {
 };
 
 class Todo {
-  constructor(data, templateSelector) {
+  constructor({ data, templateSelector, onTodoCheck, onTodoDelete }) {
     const { id, name, completed, date } = data;
     this._id = id ?? uuidv4();
     this._name = name || "Unnamed todo";
     this._completed = completed || false;
     this._date = date ?? new Date();
     this._templateEl = document.querySelector(templateSelector);
+    this._onTodoCheck = onTodoCheck;
+    this._onTodoDelete = onTodoDelete;
   }
 
   _setEventListeners() {
     this._todoCheckboxEl.addEventListener("change", () => {
-      this._completed = !this._completed;
+      this._toggleCheck();
     });
 
     this._todoDeleteBtn.addEventListener("click", () => {
-      this._todoEl.remove();
+      this._deleteTodo();
     });
+  }
+
+  _deleteTodo() {
+    this._todoEl.remove();
+    this._onTodoDelete(this._completed);
+  }
+
+  _toggleCheck() {
+    this._completed = !this._completed;
+    this._onTodoCheck(this._completed);
   }
 
   _generateCheckboxEl() {
