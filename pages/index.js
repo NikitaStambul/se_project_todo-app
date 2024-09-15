@@ -25,6 +25,7 @@ const addTodoPopup = new PopupWithForm({
     renderTodo(values);
     addTodoPopup.close();
     newTodoFormValidator.resetValidation();
+    onAddTodo();
   },
 });
 addTodoPopup.setEventListeners();
@@ -60,4 +61,8 @@ function onTodoDelete(completed) {
   if (completed) {
     todoCounter.updateCompleted(false);
   }
+}
+
+function onAddTodo() {
+  todoCounter.updateTotal(true);
 }
