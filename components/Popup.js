@@ -3,16 +3,17 @@ class Popup {
     this._popupEl = document.querySelector(popupSelector);
     this._popupCloseBtnEl = this._popupEl.querySelector(".popup__close");
     this._openBtnEl = document.querySelector(openBtnSelector);
+    this._handleEscapeClose = this._handleEscapeClose.bind(this);
   }
 
   open() {
     this._popupEl.classList.add("popup_visible");
-    document.addEventListener("keydown", this._handleEscapeClose.bind(this));
+    document.addEventListener("keydown", this._handleEscapeClose);
   }
 
   close() {
     this._popupEl.classList.remove("popup_visible");
-    document.removeEventListener("keydown", this._handleEscapeClose.bind(this));
+    document.removeEventListener("keydown", this._handleEscapeClose);
   }
 
   _handleEscapeClose(evt) {
