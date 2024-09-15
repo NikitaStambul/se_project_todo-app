@@ -17,6 +17,10 @@ class PopupWithForm extends Popup {
     return values;
   }
 
+  getForm() {
+    return this._formEl;
+  }
+
   setEventListeners() {
     super.setEventListeners();
     this._formEl.addEventListener("submit", (evt) => {
