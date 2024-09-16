@@ -10,13 +10,9 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import TodoCounter from "../components/TodoCounter.js";
 import Section from "../components/Section.js";
 
-const todosListEl = document.querySelector(".todos__list");
 const todoListSection = new Section({
   items: initialTodos,
-  renderer: (data) => {
-    const todoEl = generateTodo(data);
-    todosListEl.append(todoEl);
-  },
+  renderer: renderTodo,
   containerSelector: ".todos__list",
 });
 todoListSection.renderItems();
@@ -31,8 +27,7 @@ const addTodoPopup = new PopupWithForm({
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
     const values = { id: uuidv4(), name, date };
-    const todoEl = generateTodo(values);
-    todoListSection.addItem(todoEl);
+    renderTodo(values);
 
     addTodoPopup.close();
     newTodoFormValidator.resetValidation();
@@ -46,6 +41,11 @@ const newTodoFormValidator = new FormValidator(
   addTodoPopup.getForm()
 );
 newTodoFormValidator.enableValidation();
+
+function renderTodo(data) {
+  const todo = generateTodo(data);
+  todoListSection.addItem(todo);
+}
 
 function generateTodo(data) {
   const todo = new Todo({
