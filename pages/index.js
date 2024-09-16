@@ -17,6 +17,7 @@ const todoListSection = new Section({
     const todoEl = generateTodo(data);
     todosListEl.append(todoEl);
   },
+  containerSelector: ".todos__list",
 });
 todoListSection.renderItems();
 
@@ -40,7 +41,10 @@ const addTodoPopup = new PopupWithForm({
 });
 addTodoPopup.setEventListeners();
 
-const newTodoFormValidator = new FormValidator(validationConfig, addTodoPopup.getForm());
+const newTodoFormValidator = new FormValidator(
+  validationConfig,
+  addTodoPopup.getForm()
+);
 newTodoFormValidator.enableValidation();
 
 function generateTodo(data) {
