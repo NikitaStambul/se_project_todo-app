@@ -59,6 +59,9 @@ function generateTodo(data) {
   return todoEl;
 }
 
+// these functions are callbacks that supposed to be triggered on some events
+// so calling onTodoCheck inside onTodoDelete to correspond DRY principle
+// could lead to unintended side effects in case of adding functionality in the future
 function onTodoCheck(completed) {
   todoCounter.updateCompleted(completed);
 }
